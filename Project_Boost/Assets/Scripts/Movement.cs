@@ -13,6 +13,35 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Input. This class already has these methods/functions because it inherited them from MonoBehaviour
+        ProcessThrust();
+        ProcessRotation();
+    }
+
+    void ProcessThrust()
+    {
+        //if the player is holding space.
+        if(Input.GetKey(KeyCode.Space))
+        {
+            //print message
+            Debug.Log("Pressed SPACE -- Thrusting");
+        }
+
+    }
+
+    void ProcessRotation()
+    {
+        //if the player is holding a or left arrow
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            //print message
+            Debug.Log("Rotating Left");
+        }
+
+        //else if the player is holding d or right arrow 
+        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            //print message
+            Debug.Log("Rotating Right");
+        }
     }
 }
