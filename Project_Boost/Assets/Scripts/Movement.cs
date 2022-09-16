@@ -54,7 +54,13 @@ public class Movement : MonoBehaviour
 
     private void ApplyRotation( float fltRotationThisFrame)
     {
-        //rotate the player
+        //freezing rotation so we can manually rotate.
+        rigidbodyPlayer.freezeRotation = true;
+        
+        // manually rotate the player
         transform.Rotate(Vector3.forward * fltRotationThisFrame * Time.deltaTime);
+
+        //unfreeze rotation so pyschics can take over
+        rigidbodyPlayer.freezeRotation = false;
     }
 }
