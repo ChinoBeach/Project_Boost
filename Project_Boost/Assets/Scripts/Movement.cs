@@ -6,6 +6,7 @@ public class Movement : MonoBehaviour
 {
     //member variable
     Rigidbody rigidbodyPlayer;
+    [SerializeField] float fltMainThrust = 1000f; 
     
     // Start is called before the first frame update
     void Start()
@@ -28,8 +29,9 @@ public class Movement : MonoBehaviour
         {
             //print message
             //Debug.Log("Pressed SPACE -- Thrusting");
-            //make the player go up (vector3 0,1,0)
-            rigidbodyPlayer.AddRelativeForce(Vector3.up);
+
+            //make the player go up (vector3 0,1,0) mulitplied by the speed and make it framerate independent
+            rigidbodyPlayer.AddRelativeForce(Vector3.up * fltMainThrust * Time.deltaTime);
         }
 
     }
