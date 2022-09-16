@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    //member variable
+    Rigidbody rigidbodyPlayer;
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+        //instantiate(cache) the rigidbody
+        rigidbodyPlayer = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -23,7 +27,9 @@ public class Movement : MonoBehaviour
         if(Input.GetKey(KeyCode.Space))
         {
             //print message
-            Debug.Log("Pressed SPACE -- Thrusting");
+            //Debug.Log("Pressed SPACE -- Thrusting");
+            //make the player go up (vector3 0,1,0)
+            rigidbodyPlayer.AddRelativeForce(Vector3.up);
         }
 
     }
