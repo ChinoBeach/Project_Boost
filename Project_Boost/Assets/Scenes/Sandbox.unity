@@ -529,6 +529,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rocket
       objectReference: {fileID: 0}
+    - target: {fileID: 6419277116334147926, guid: 15d14dd61f775e24e870e693ad1b3461, type: 3}
+      propertyPath: fltRotationThrust
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15d14dd61f775e24e870e693ad1b3461, type: 3}
 --- !u!1 &601096304572805400 stripped
@@ -548,6 +552,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68f72163f48f35a479a76a4cb22c7aa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fltMainThrust: 0
+  fltRotationThrust: 1
 --- !u!1001 &6528561366931101261
 PrefabInstance:
   m_ObjectHideFlags: 0
