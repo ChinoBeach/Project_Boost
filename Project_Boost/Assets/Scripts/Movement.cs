@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    //member variable
+    //member variables for movement 
     Rigidbody rigidbodyPlayer;
     [SerializeField] float fltMainThrust = 1000f;
     [SerializeField] float fltRotationThrust = 100f;
 
+    //varaibles for sound
+    AudioSource audioSourcePlayer;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        //instantiate(cache) the rigidbody
+        //cache the rigidbody
         rigidbodyPlayer = GetComponent<Rigidbody>();
+
+        //cache the audioSource
+        audioSourcePlayer = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -30,6 +37,19 @@ public class Movement : MonoBehaviour
         {
             //make the player go up (vector3 0,1,0) mulitplied by the speed and make it framerate independent
             rigidbodyPlayer.AddRelativeForce(Vector3.up * fltMainThrust * Time.deltaTime);
+
+            //if the music isnt already playing
+            if (!audioSourcePlayer.isPlaying)
+            {
+                //start the music connected to the audiosource
+                audioSourcePlayer.Play();
+            }
+        }
+        //when you are not thrusting (holding space) 
+        else
+        {
+            //stop any playing music
+            audioSourcePlayer.Stop();
         }
 
     }
@@ -63,4 +83,6 @@ public class Movement : MonoBehaviour
         //unfreeze rotation so pyschics can take over
         rigidbodyPlayer.freezeRotation = false;
     }
+
+
 }
