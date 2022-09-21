@@ -6,14 +6,23 @@ public class CollisionHandler : MonoBehaviour
     //class variables 
     int intCurrentSceneIndex = 0;
     int intMaxLevelIndex;
+    bool bolHasPlayerInteracted = false;
 
     //member variables
     [SerializeField] float fltInvokeSec = 1f;
+
+    //audio variables 
+    AudioSource audioSourcePlayer;
+    [SerializeField] AudioClip audioSuccess;
+    [SerializeField] AudioClip audioCrash;
 
     private void Start()
     {
         //set up the max level index
         intMaxLevelIndex = (SceneManager.sceneCountInBuildSettings - 1);
+
+        //set up the audio source
+        audioSourcePlayer = GetComponent<AudioSource>();
 
     }
 
@@ -36,11 +45,20 @@ public class CollisionHandler : MonoBehaviour
             //if the player runs into something tagged as Finish
             case "Finish":
 
-                //print message
-                Debug.Log("Level Finished");
+                //as long as the player hasnt already lost or won
+                if(!bolHasPlayerInteracted)
+                {
+                    //tell the player its interacted with an object 
+                    bolHasPlayerInteracted = true;
 
-                //load the next level
-                StartSuccessSequence();
+                    //print message
+                    Debug.Log("Level Finished");
+
+                    //load the next level
+                    StartSuccessSequence();
+
+                }
+                
 
                 break;
 
@@ -55,11 +73,20 @@ public class CollisionHandler : MonoBehaviour
             //if the player runs into something that isnt tagged, or doesnt match a tag above
             default:
 
-                //print message
-                Debug.Log("Explosion Detetect. Ship Lost.");
+                //make sure the player hasnt already lost or won
+                if(!bolHasPlayerInteracted)
+                {
+                    //tell the player that its interacted 
+                    bolHasPlayerInteracted = true;
 
-                //disable the movement and reload the scene
-                StartCrashSequence();
+                    //print message
+                    Debug.Log("Explosion Detetect. Ship Lost.");
+
+                    //disable the movement and reload the scene
+                    StartCrashSequence();
+
+                }
+                
 
                 break;
         }
@@ -109,6 +136,9 @@ public class CollisionHandler : MonoBehaviour
         //turn off the movement
         SetMovementFalse();
 
+        //play crash sound
+        audioSourcePlayer.PlayOneShot(audioCrash);
+
         //reload the level after a delay 
         Invoke("ReloadLevel", fltInvokeSec);
 
@@ -119,6 +149,9 @@ public class CollisionHandler : MonoBehaviour
     {
         //turn off the movement
         SetMovementFalse();
+
+        //play success sound
+        audioSourcePlayer.PlayOneShot(audioSuccess);
 
         //load the next level after a delay
         Invoke("LoadNextLevel", fltInvokeSec);

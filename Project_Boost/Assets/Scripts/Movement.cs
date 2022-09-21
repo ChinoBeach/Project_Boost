@@ -8,10 +8,11 @@ public class Movement : MonoBehaviour
     Rigidbody rigidbodyPlayer;
     [SerializeField] float fltMainThrust = 1000f;
     [SerializeField] float fltRotationThrust = 100f;
+   
 
     //varaibles for sound
     AudioSource audioSourcePlayer;
-
+    [SerializeField] AudioClip audioEngine;
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +43,10 @@ public class Movement : MonoBehaviour
             if (!audioSourcePlayer.isPlaying)
             {
                 //start the music connected to the audiosource
-                audioSourcePlayer.Play();
+                //audioSourcePlayer.Play();
+
+                //play the audioclip for the engines
+                audioSourcePlayer.PlayOneShot(audioEngine);
             }
         }
         //when you are not thrusting (holding space) 
