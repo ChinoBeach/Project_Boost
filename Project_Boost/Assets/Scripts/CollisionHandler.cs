@@ -3,9 +3,23 @@ using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
 {
+    //class variables 
+    int intCurrentSceneIndex = 0;
+    int intMaxLevelIndex;
+
+    private void Start()
+    {
+        //set up the max level index
+        intMaxLevelIndex = (SceneManager.sceneCountInBuildSettings - 1);
+
+    }
+
     //when the object hits something
     private void OnCollisionEnter(Collision other)
     {
+        //get the current scene index
+        intCurrentSceneIndex = GetCurrentSceneIndex();
+
         //switch statements looking at what the player is colliding with based off of the tag
         switch (other.gameObject.tag)
         {
@@ -21,6 +35,10 @@ public class CollisionHandler : MonoBehaviour
 
                 //print message
                 Debug.Log("Level Finished");
+
+                //load the next level
+                LoadNextLevel();
+
                 break;
 
             //if the player runs into something tagged as Fuel
@@ -43,12 +61,35 @@ public class CollisionHandler : MonoBehaviour
        
     }
 
+    int GetCurrentSceneIndex()
+    {
+        //retrieve current Scene 
+        intCurrentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        return intCurrentSceneIndex;
+    }
     void ReloadLevel()
     {
-        //current Scene 
-        int intCurrentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-
         //reload the scene
+        SceneManager.LoadScene(intCurrentSceneIndex);
+    }
+
+    void LoadNextLevel()
+    {
+        //if your not at the end of the index,
+        if(intCurrentSceneIndex < intMaxLevelIndex)
+        {
+            //increment current level
+            intCurrentSceneIndex++;
+
+        }
+        else
+        {
+            //go back to the start
+            intCurrentSceneIndex = 0;
+        }
+
+        //load new level
         SceneManager.LoadScene(intCurrentSceneIndex);
     }
 }
