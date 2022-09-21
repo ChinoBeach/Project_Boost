@@ -7,6 +7,9 @@ public class CollisionHandler : MonoBehaviour
     int intCurrentSceneIndex = 0;
     int intMaxLevelIndex;
 
+    //member variables
+    [SerializeField] float fltInvokeSec = 1f;
+
     private void Start()
     {
         //set up the max level index
@@ -37,16 +40,17 @@ public class CollisionHandler : MonoBehaviour
                 Debug.Log("Level Finished");
 
                 //load the next level
-                LoadNextLevel();
+                StartSuccessSequence();
 
                 break;
 
-            //if the player runs into something tagged as Fuel
+           /* //if the player runs into something tagged as Fuel
             case "Fuel":
 
                 //print message
                 Debug.Log("Fuel Aquired");
                 break;
+           */
 
             //if the player runs into something that isnt tagged, or doesnt match a tag above
             default:
@@ -54,8 +58,9 @@ public class CollisionHandler : MonoBehaviour
                 //print message
                 Debug.Log("Explosion Detetect. Ship Lost.");
 
-                //reload the level
-                ReloadLevel();
+                //disable the movement and reload the scene
+                StartCrashSequence();
+
                 break;
         }
        
@@ -91,5 +96,32 @@ public class CollisionHandler : MonoBehaviour
 
         //load new level
         SceneManager.LoadScene(intCurrentSceneIndex);
+    }
+
+    void SetMovementFalse()
+    {
+        //retrieve the movemenet script componenet from the player and disable it
+        GetComponent<Movement>().enabled = false;
+
+    }
+    void StartCrashSequence()
+    {
+        //turn off the movement
+        SetMovementFalse();
+
+        //reload the level after a delay 
+        Invoke("ReloadLevel", fltInvokeSec);
+
+        
+    }
+
+    void StartSuccessSequence()
+    {
+        //turn off the movement
+        SetMovementFalse();
+
+        //load the next level after a delay
+        Invoke("LoadNextLevel", fltInvokeSec);
+
     }
 }
