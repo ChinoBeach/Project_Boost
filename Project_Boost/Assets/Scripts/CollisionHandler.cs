@@ -8,6 +8,8 @@ public class CollisionHandler : MonoBehaviour
     int intMaxLevelIndex;
     bool bolHasPlayerInteracted = false;
 
+   // bool bolIsTransitioning = false; did not do this along with the video because i did this myself during the last section as bolHasInteracted. 
+
     //member variables
     [SerializeField] float fltInvokeSec = 1f;
 
@@ -32,6 +34,9 @@ public class CollisionHandler : MonoBehaviour
         //get the current scene index
         intCurrentSceneIndex = GetCurrentSceneIndex();
 
+        //if the player has already interactued with something, dont do anything:
+        if (bolHasPlayerInteracted) { return; }
+
         //switch statements looking at what the player is colliding with based off of the tag
         switch (other.gameObject.tag)
         {
@@ -44,22 +49,11 @@ public class CollisionHandler : MonoBehaviour
 
             //if the player runs into something tagged as Finish
             case "Finish":
+                //print message
+                Debug.Log("Level Finished");
 
-                //as long as the player hasnt already lost or won
-                if(!bolHasPlayerInteracted)
-                {
-                    //tell the player its interacted with an object 
-                    bolHasPlayerInteracted = true;
-
-                    //print message
-                    Debug.Log("Level Finished");
-
-                    //load the next level
-                    StartSuccessSequence();
-
-                }
-                
-
+                //load the next level
+                StartSuccessSequence();
                 break;
 
            /* //if the player runs into something tagged as Fuel
@@ -72,22 +66,11 @@ public class CollisionHandler : MonoBehaviour
 
             //if the player runs into something that isnt tagged, or doesnt match a tag above
             default:
+                //print message
+                Debug.Log("Explosion Detetect. Ship Lost.");
 
-                //make sure the player hasnt already lost or won
-                if(!bolHasPlayerInteracted)
-                {
-                    //tell the player that its interacted 
-                    bolHasPlayerInteracted = true;
-
-                    //print message
-                    Debug.Log("Explosion Detetect. Ship Lost.");
-
-                    //disable the movement and reload the scene
-                    StartCrashSequence();
-
-                }
-                
-
+                //disable the movement and reload the scene
+                StartCrashSequence();
                 break;
         }
        
@@ -104,6 +87,8 @@ public class CollisionHandler : MonoBehaviour
     {
         //reload the scene
         SceneManager.LoadScene(intCurrentSceneIndex);
+        //restart interactoion
+        bolHasPlayerInteracted = false;
     }
 
     void LoadNextLevel()
@@ -133,8 +118,14 @@ public class CollisionHandler : MonoBehaviour
     }
     void StartCrashSequence()
     {
+        //tell the player that its interacted 
+        bolHasPlayerInteracted = true;
+
         //turn off the movement
         SetMovementFalse();
+
+        //turn off other sounds
+        audioSourcePlayer.Stop();
 
         //play crash sound
         audioSourcePlayer.PlayOneShot(audioCrash);
@@ -147,8 +138,14 @@ public class CollisionHandler : MonoBehaviour
 
     void StartSuccessSequence()
     {
+        //tell the player that its interacted 
+        bolHasPlayerInteracted = true;
+
         //turn off the movement
         SetMovementFalse();
+
+        //turn off other sounds
+        audioSourcePlayer.Stop();
 
         //play success sound
         audioSourcePlayer.PlayOneShot(audioSuccess);
