@@ -18,6 +18,9 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] AudioClip audioSuccess;
     [SerializeField] AudioClip audioCrash;
 
+    //particle varaibales
+    [SerializeField] ParticleSystem particleSuccess;
+    [SerializeField] ParticleSystem particleCrash;
     private void Start()
     {
         //set up the max level index
@@ -25,6 +28,8 @@ public class CollisionHandler : MonoBehaviour
 
         //set up the audio source
         audioSourcePlayer = GetComponent<AudioSource>();
+
+
 
     }
 
@@ -127,6 +132,9 @@ public class CollisionHandler : MonoBehaviour
         //turn off other sounds
         audioSourcePlayer.Stop();
 
+        //play crash particles
+        particleCrash.Play();
+
         //play crash sound
         audioSourcePlayer.PlayOneShot(audioCrash);
 
@@ -146,6 +154,9 @@ public class CollisionHandler : MonoBehaviour
 
         //turn off other sounds
         audioSourcePlayer.Stop();
+
+        //play success particles
+        particleSuccess.Play();
 
         //play success sound
         audioSourcePlayer.PlayOneShot(audioSuccess);

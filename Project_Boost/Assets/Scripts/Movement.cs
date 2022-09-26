@@ -14,6 +14,12 @@ public class Movement : MonoBehaviour
     AudioSource audioSourcePlayer;
     [SerializeField] AudioClip audioEngine;
 
+    //variables for particles
+    [SerializeField] ParticleSystem particlesEngine;
+    [SerializeField] ParticleSystem particlesLeftThrust;
+    [SerializeField] ParticleSystem particlesRightThrust;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,12 +54,25 @@ public class Movement : MonoBehaviour
                 //play the audioclip for the engines
                 audioSourcePlayer.PlayOneShot(audioEngine);
             }
+
+            if(!particlesEngine.isPlaying)
+            {
+                //play the particles
+                particlesEngine.Play();
+            }
+           
         }
         //when you are not thrusting (holding space) 
         else
         {
             //stop any playing music
             audioSourcePlayer.Stop();
+
+            //if the particles are playing, stop them
+            if (particlesEngine.isPlaying)
+            {
+                particlesEngine.Stop();
+            }
         }
 
     }
@@ -65,6 +84,12 @@ public class Movement : MonoBehaviour
         {
             //rotate the player left
             ApplyRotation(fltRotationThrust);
+            if (!particlesLeftThrust.isPlaying)
+            {
+                //play the particles
+                particlesLeftThrust.Play();
+            }
+
         }
 
         //else if the player is holding d or right arrow 
@@ -73,6 +98,18 @@ public class Movement : MonoBehaviour
 
             //rotate the player right
             ApplyRotation(-fltRotationThrust);
+            if (!particlesRightThrust.isPlaying)
+            {
+                //play the particles
+                particlesRightThrust.Play();
+            }
+        }
+
+        //else
+        else
+        {   //turn off thruster particles
+            particlesRightThrust.Stop();
+            particlesLeftThrust.Stop();
         }
     }
 
