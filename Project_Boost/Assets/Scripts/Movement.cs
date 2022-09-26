@@ -42,39 +42,49 @@ public class Movement : MonoBehaviour
         //if the player is holding space.
         if(Input.GetKey(KeyCode.Space))
         {
-            //make the player go up (vector3 0,1,0) mulitplied by the speed and make it framerate independent
-            rigidbodyPlayer.AddRelativeForce(Vector3.up * fltMainThrust * Time.deltaTime);
+            StartThrusting();
 
-            //if the music isnt already playing
-            if (!audioSourcePlayer.isPlaying)
-            {
-                //start the music connected to the audiosource
-                //audioSourcePlayer.Play();
-
-                //play the audioclip for the engines
-                audioSourcePlayer.PlayOneShot(audioEngine);
-            }
-
-            if(!particlesEngine.isPlaying)
-            {
-                //play the particles
-                particlesEngine.Play();
-            }
-           
         }
         //when you are not thrusting (holding space) 
         else
         {
-            //stop any playing music
-            audioSourcePlayer.Stop();
-
-            //if the particles are playing, stop them
-            if (particlesEngine.isPlaying)
-            {
-                particlesEngine.Stop();
-            }
+            StopThrusting();
         }
 
+    }
+
+    private void StopThrusting()
+    {
+        //stop any playing music
+        audioSourcePlayer.Stop();
+
+        //if the particles are playing, stop them
+        if (particlesEngine.isPlaying)
+        {
+            particlesEngine.Stop();
+        }
+    }
+
+    private void StartThrusting()
+    {
+        //make the player go up (vector3 0,1,0) mulitplied by the speed and make it framerate independent
+        rigidbodyPlayer.AddRelativeForce(Vector3.up * fltMainThrust * Time.deltaTime);
+
+        //if the music isnt already playing
+        if (!audioSourcePlayer.isPlaying)
+        {
+            //start the music connected to the audiosource
+            //audioSourcePlayer.Play();
+
+            //play the audioclip for the engines
+            audioSourcePlayer.PlayOneShot(audioEngine);
+        }
+
+        if (!particlesEngine.isPlaying)
+        {
+            //play the particles
+            particlesEngine.Play();
+        }
     }
 
     void ProcessRotation()
@@ -83,33 +93,47 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             //rotate the player left
-            ApplyRotation(fltRotationThrust);
-            if (!particlesLeftThrust.isPlaying)
-            {
-                //play the particles
-                particlesLeftThrust.Play();
-            }
+            RotateLeft();
 
         }
 
         //else if the player is holding d or right arrow 
         else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
-
             //rotate the player right
-            ApplyRotation(-fltRotationThrust);
-            if (!particlesRightThrust.isPlaying)
-            {
-                //play the particles
-                particlesRightThrust.Play();
-            }
+            RotateRight();
         }
 
         //else
         else
         {   //turn off thruster particles
-            particlesRightThrust.Stop();
-            particlesLeftThrust.Stop();
+            StopParticles();
+        }
+    }
+
+    private void StopParticles()
+    {
+        particlesRightThrust.Stop();
+        particlesLeftThrust.Stop();
+    }
+
+    private void RotateRight()
+    {
+        ApplyRotation(-fltRotationThrust);
+        if (!particlesRightThrust.isPlaying)
+        {
+            //play the particles
+            particlesRightThrust.Play();
+        }
+    }
+
+    private void RotateLeft()
+    {
+        ApplyRotation(fltRotationThrust);
+        if (!particlesLeftThrust.isPlaying)
+        {
+            //play the particles
+            particlesLeftThrust.Play();
         }
     }
 
