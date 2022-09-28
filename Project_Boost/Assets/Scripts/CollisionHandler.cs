@@ -21,6 +21,10 @@ public class CollisionHandler : MonoBehaviour
     //particle varaibales
     [SerializeField] ParticleSystem particleSuccess;
     [SerializeField] ParticleSystem particleCrash;
+
+    //debugginh variables
+    bool bolCollisionDisabled = false;
+
     private void Start()
     {
         //set up the max level index
@@ -33,14 +37,37 @@ public class CollisionHandler : MonoBehaviour
 
     }
 
+    void Update()
+    {
+        //test debug keys
+        RespondToDebugKeys();
+    }
+
+     void RespondToDebugKeys()
+    {
+        //if user hits 'L' 
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            //load the next level
+            LoadNextLevel();
+        }
+
+        //if user hits 'C'
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            //toogle collision
+            bolCollisionDisabled = ! bolCollisionDisabled;
+        }
+    }
+
     //when the object hits something
-    private void OnCollisionEnter(Collision other)
+    void OnCollisionEnter(Collision other)
     {
         //get the current scene index
         intCurrentSceneIndex = GetCurrentSceneIndex();
 
         //if the player has already interactued with something, dont do anything:
-        if (bolHasPlayerInteracted) { return; }
+        if (bolHasPlayerInteracted || bolCollisionDisabled) { return; }
 
         //switch statements looking at what the player is colliding with based off of the tag
         switch (other.gameObject.tag)
