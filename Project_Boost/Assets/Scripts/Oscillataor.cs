@@ -24,6 +24,7 @@ public class Oscillataor : MonoBehaviour
         //variables
         const float fltTau = Mathf.PI * 2;                      //contastnt value of 6.283
 
+        if(fltPeriod <= Mathf.Epsilon) { return; }               //cant divide by 0              
         float fltCycles = Time.time / fltPeriod;                //contilly growing over time
         float fltRawSinWave = Mathf.Sin(fltCycles * fltTau);    //going from -1 to 1
 
